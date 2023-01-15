@@ -2,19 +2,33 @@
 namespace App\Controllers;
 use CodeIgniter\Files\File;
 use App\Models\SubjectModel;
+use App\Models\TagModel;
 
 class UploadController extends BaseController{
     protected $helpers = ['form'];
+
+    private function loadData(){
+        $subjectsModel = new SubjectModel();
+        $subjects = $subjectsModel->findAll();
+
+        $tagsModel = new TagModel();
+        $tags = $tagsModel->findAll();
+
+        return [
+            'subjects'=>$subjects,
+            'tags'=>$tags
+        ];
+    }
 
     public function index(){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
         $data['currentpage'] = 'Upload Subject Data';
         $data['errors'] = [];
-        // get subjects from db
-        $subjectsModel = new SubjectModel();
-        $subjects = $subjectsModel->findAll();
-        $data['subjects'] = $subjects;
+        // get data from db
+        $data_from_db = $this->loadData();
+        $data['subjects'] = $data_from_db['subjects'];
+        $data['tags'] = $data_from_db['tags'];
         return view('pages/dashboard/upload_data', $data);
     }
 
@@ -25,14 +39,14 @@ class UploadController extends BaseController{
         $data['currentpage'] = 'Upload Subject Data';
 
         //$mimes = config(\Config\Mimes::class);
-        //var_dump($mimes); does not work
+        //var_dump($mimes); does not work, it's an empty object
 
         $validationRule = [
-            'userfile' => [
+            'data_file' => [
                 'label' => 'CSV File',
                 'rules' => [
-                    'uploaded[userfile]',
-                    'mime_in[userfile,'.implode (',', [
+                    'uploaded[data_file]',
+                    'mime_in[data_file,'.implode (',', [
                         'text/csv',
                         'text/x-comma-separated-values',
                         'text/comma-separated-values',
@@ -44,7 +58,7 @@ class UploadController extends BaseController{
                         'application/vnd.msexcel',
                         'text/plain',
                     ]).']',
-                    'max_size[userfile,100000]',// 100000kb max
+                    'max_size[data_file,100000]',// 100000kb max
                 ],
             ],
         ];
@@ -52,9 +66,8 @@ class UploadController extends BaseController{
             $data['errors'] = $this->validator->getErrors();
             return view('pages/dashboard/upload_data', $data);
         }
-        
 
-        $file = $this->request->getFile('userfile');
+        $file = $this->request->getFile('data_file');
 
         if (! $file->hasMoved()) {
             // store file in writeable/uploads folder
