@@ -10,7 +10,8 @@
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url('assets/vendor/bootstrap/css/bootstrap.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/vendor/bootstrap-icons/bootstrap-icons.css'); ?>" rel="stylesheet">
-
+    <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
+    
 </head>
 <body>
 

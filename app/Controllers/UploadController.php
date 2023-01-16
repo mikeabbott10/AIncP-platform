@@ -1,15 +1,13 @@
 <?php
 namespace App\Controllers;
 use CodeIgniter\Files\File;
-use App\Models\SubjectModel;
 use App\Models\TagModel;
 
 class UploadController extends BaseController{
     protected $helpers = ['form'];
 
     private function loadData(){
-        $subjectsModel = new SubjectModel();
-        $subjects = $subjectsModel->findAll();
+        $subjects = $this->loadSubjects();
 
         $tagsModel = new TagModel();
         $tags = $tagsModel->findAll();

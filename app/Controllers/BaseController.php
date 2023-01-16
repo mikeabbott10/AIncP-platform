@@ -8,6 +8,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\SubjectModel;
 
 /**
  * Class BaseController
@@ -62,5 +63,10 @@ abstract class BaseController extends Controller
             return false;
         }   
         return true;
+    }
+
+    public function loadSubjects(){
+        $subjectsModel = new SubjectModel();
+        return $subjectsModel->findAll();
     }
 }

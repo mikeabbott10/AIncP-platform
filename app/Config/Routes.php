@@ -32,10 +32,10 @@ $routes->set404Override();
 $routes->get('/', 'AuthController::index');
 $routes->post('/', 'AuthController::index');
 $routes->get('logout', 'AuthController::logout');
-//$routes->get('dashboard', 'DashboardController::index');
-$routes->get('dashboard', 'DashboardController::subject'); // index dashboard page
-$routes->get('dashboard/subjects', 'DashboardController::subject'); // all subjects overview page
-$routes->get('dashboard/subjects/(:num)', 'DashboardController::subject/$1'); // subject (:num) overview page
+//$routes->get('dashboard', 'SubjectsOverviewController::index');
+$routes->get('dashboard', 'SubjectsOverviewController::subject'); // index dashboard page
+$routes->get('dashboard/subjects', 'SubjectsOverviewController::subject'); // all subjects overview page
+$routes->get('dashboard/subjects/(:num)', 'SubjectsOverviewController::subject/$1'); // subject (:num) overview page
 $routes->get('dashboard/upload', 'UploadController::index'); // upload file page
 $routes->post('dashboard/upload/upload', 'UploadController::upload'); // perform upload
 

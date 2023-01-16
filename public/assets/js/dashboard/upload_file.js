@@ -11,9 +11,9 @@ const populateForm = (subj) => {
 
 const changeInputStates = (state) => {
     $('#newsubjectform input:not([type=submit]):not([type=file])').attr('disabled', state)
-    $('#newsubjectform select').attr('disabled', state)
+    $('#newsubjectform select:not([name=subjectselection]):not(name=data_tag)').attr('disabled', state)
     $('#newsubjectform input:not([type=submit]):not([type=file])').prop('disabled', state)
-    $('#newsubjectform select').prop('disabled', state)
+    $('#newsubjectform select:not([name=subjectselection]):not(name=data_tag)').prop('disabled', state)
 }
 
 jQuery(function ($) {$(function () {
@@ -26,7 +26,7 @@ jQuery(function ($) {$(function () {
         if(selectedValue==='-1'){
             // enable and clear inputs inside the form
             $('#newsubjectform input:not([type=submit])').val('').change();
-            $('#newsubjectform select').val('').change();
+            $('#newsubjectform select:not([name=subjectselection]):not(name=data_tag)').val('').change();
             changeInputStates(false);
         }else{
             // disable and populate inputs inside the form

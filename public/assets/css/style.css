@@ -1306,3 +1306,14 @@
     position:absolute;
     left:-100vw;
   }
+
+
+  .subject_data_card{
+    width:85%;
+  }
+
+  @media screen and (min-width: 1400px) {
+    .subject_data_card{
+      width:50%;
+    }
+  }

@@ -16,6 +16,8 @@
     <script src="<?php echo base_url('assets/vendor/jquery/jquery-3.6.2.min.js'); ?>" defer></script>
 
     <script src="<?php echo base_url('assets/js/main.js'); ?>" defer></script>
+
+    <?= $this->renderSection('page_related_head') ?>
 </head>
 <body>
     <?php echo view('Components/dashboard_header') ?>
