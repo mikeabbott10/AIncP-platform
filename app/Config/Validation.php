@@ -41,4 +41,11 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public $subject_card_rules = [
+        'name' => 'max_length[255]',
+        'surname' => 'max_length[255]',
+        'code'  => 'required|max_length[20]',
+        'gender' => 'max_length[1]',
+        'dominance' => 'max_length[1]'
+    ];
 }

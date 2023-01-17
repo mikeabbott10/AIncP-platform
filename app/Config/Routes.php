@@ -32,10 +32,15 @@ $routes->set404Override();
 $routes->get('/', 'AuthController::index');
 $routes->post('/', 'AuthController::index');
 $routes->get('logout', 'AuthController::logout');
-//$routes->get('dashboard', 'SubjectsOverviewController::index');
-$routes->get('dashboard', 'SubjectsOverviewController::subject'); // index dashboard page
-$routes->get('dashboard/subjects', 'SubjectsOverviewController::subject'); // all subjects overview page
-$routes->get('dashboard/subjects/(:num)', 'SubjectsOverviewController::subject/$1'); // subject (:num) overview page
+$routes->get('dashboard', 'SubjectsController::index'); // index dashboard page
+$routes->get('dashboard/subject/add', 'SubjectsController::add_subject'); // add subject page
+$routes->get('dashboard/subjects', 'SubjectsController::index'); // all subjects overview page
+$routes->get('dashboard/subjects/(:num)', 'SubjectsController::subject_card/$1'); // subject (:num) overview page
+$routes->get('dashboard/subjects/(:num)/tag_data', 'SubjectsController::tag_data/$1'); // subject (:num) tag data page
+$routes->get('dashboard/subject/delete/(:num)', 'SubjectsController::delete_subject/$1'); // perform new subject data insert
+$routes->post('dashboard/subject/upload', 'SubjectsController::upload_subject_data'); // perform new subject data insert
+$routes->post('dashboard/subject/upload/(:num)', 'SubjectsController::upload_subject_data/$1'); // perform existing subject data update
+
 $routes->get('dashboard/upload', 'UploadController::index'); // upload file page
 $routes->post('dashboard/upload/upload', 'UploadController::upload'); // perform upload
 

@@ -20,8 +20,7 @@ use App\Models\SubjectModel;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-abstract class BaseController extends Controller
-{
+abstract class BaseController extends Controller{
     /**
      * Instance of the main Request object.
      *
@@ -44,6 +43,8 @@ abstract class BaseController extends Controller
      */
     protected $session;
 
+    protected $validation;
+
     /**
      * Constructor.
      */
@@ -55,9 +56,9 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
+        $this->validation = \Config\Services::validation();
     }
 
-    // set user with: $session->set('user', 'some_value');
     public function isUserSessionValid() : bool{
         if ( ! $this->session->get('isLoggedIn') ){
             return false;
@@ -68,5 +69,10 @@ abstract class BaseController extends Controller
     public function loadSubjects(){
         $subjectsModel = new SubjectModel();
         return $subjectsModel->findAll();
+    }
+
+    public function loadSubject($id){
+        $subjectsModel = new SubjectModel();
+        return $subjectsModel->where('ID', $id)->first();
     }
 }

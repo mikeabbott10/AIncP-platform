@@ -100,4 +100,17 @@ jQuery(function ($) {$(function () {
             tr.addClass('shown');
         }
     });
+
+    $('.remove-row').on('click', async (event) => {
+        let _this = $(event.target)
+        if ( ! _this.is( "button" ) ) { // event.target can return a descendent
+            _this = _this.parent();
+        }
+        if(!confirm("Do you really want to continue?"))
+            return;
+        await fetch(deleteSubjectBaseUrl+'/'+$(_this).data('id'),{
+            method: 'GET'
+        })
+        window.location.href='';
+    })
 })})

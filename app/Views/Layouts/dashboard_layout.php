@@ -30,6 +30,7 @@
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><?= $currentpage; ?></li>
+                    <?= $this->renderSection('breadcrumb') ?>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
