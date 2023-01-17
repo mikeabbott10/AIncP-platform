@@ -44,15 +44,15 @@
     <td class="action align-middle p-1 px-2" style="max-width:3rem; height:2rem; overflow:hidden">
         <div class="d-flex justify-content-center">
             <a class="btn btn-primary edit-row p-1 me-1 text-white" style="width:2rem;"
-                href="<?=base_url('dashboard/subjects/'.$subject['ID'].'/tag_data')?>">
+                href="<?=base_url('dashboard/subject/'.$subject['id'].'/sessions')?>">
                 <i class="bi bi-activity"></i>
             </a>
             <a class="btn btn-dark edit-row p-1 me-1 text-white" style="width:2rem;"
-                href="<?=base_url('dashboard/subjects/'.$subject['ID'])?>">
+                href="<?=base_url('dashboard/subject/'.$subject['id'])?>">
                 <i class="bi bi-pencil-square"></i>
             </a>
             <button class="btn btn-danger remove-row p-1 text-white" style="width:2rem;"
-                data-ID="<?=$subject['ID']?>">
+                data-id="<?=$subject['id']?>">
                 <i class="bi bi-trash"></i>
             </button>
         </div>

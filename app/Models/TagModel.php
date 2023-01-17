@@ -11,8 +11,8 @@ class TagModel extends Model{
      */
     protected function initialize(){
         $this->table = 'tags';
-        $this->primaryKey = 'ID';
-        $this->allowedFields[] = 'ID';
+        $this->primaryKey = 'id';
+        $this->allowedFields[] = 'id';
         $this->allowedFields[] = 'label';
     }
 }

@@ -31,7 +31,7 @@ jQuery(function ($) {$(function () {
         }else{
             // disable and populate inputs inside the form
             let selectedSubject = subjects.filter(subj => {
-                return subj.ID === selectedValue
+                return subj.id === selectedValue
             });
             populateForm(selectedSubject[0]);
             changeInputStates(true);

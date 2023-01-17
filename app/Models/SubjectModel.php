@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
-use stdClass;
 
 class SubjectModel extends Model{
     /**
@@ -12,8 +11,8 @@ class SubjectModel extends Model{
      */
     protected function initialize(){
         $this->table = 'subjects';
-        $this->primaryKey = 'ID';
-        $this->allowedFields[] = 'ID';
+        $this->primaryKey = 'id';
+        $this->allowedFields[] = 'id';
         $this->allowedFields[] = 'name';
         $this->allowedFields[] = 'surname';
         $this->allowedFields[] = 'code';

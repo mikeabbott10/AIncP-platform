@@ -42,7 +42,7 @@ class AuthController extends BaseController{
             $authenticatePassword = password_verify($password, $pass);
             if($authenticatePassword){
                 $ses_data = [
-                    'userid' => $data['ID'],
+                    'userid' => $data['id'],
                     'usercode' => $data['code'],
                     'isLoggedIn' => TRUE
                 ];

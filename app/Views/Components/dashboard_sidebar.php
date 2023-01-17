@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link <?php echo $currentpage == 'Subjects' ? '' : 'collapsed'; ?>" href="<?php echo base_url('dashboard/subjects')?>">
+            <a class="nav-link <?php echo $currentpage == 'Subjects' ? '' : 'collapsed'; ?>" href="<?php echo base_url('dashboard/subject')?>">
                 <i class="bi bi-grid"></i>
                 <span>Subjects</span>
             </a>

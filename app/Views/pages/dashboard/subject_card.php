@@ -19,7 +19,7 @@
 ===================================================================== -->
 <?= $this->section('content') ?>
 <div class="d-flex justify-content-center">
-    <?= form_open('dashboard/subject/upload'.($subject['ID']==''?'':'/'.$subject['ID']), 
+    <?= form_open('dashboard/subject'.($subject['id']==''?'':'/'.$subject['id']).'/upload', 
         [   
             'method'=>'post',
             'class'=>"subject_data_card d-flex flex-column align-items-center justify-content-center border border-secondary rounded py-2 pb-3 mt-4 bg-white bg-opacity-50", 

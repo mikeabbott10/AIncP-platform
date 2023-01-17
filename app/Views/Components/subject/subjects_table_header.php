@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title mb-0"></h5>
             <div class="table-responsive-xl">
-                <table class="w-100 table table-bordered subjects-table" style="max-width:100% !important;">
+                <table class="w-100 table table-bordered dt-table" style="max-width:100% !important;">
                     <thead>
                         <tr>
                             <th></th>

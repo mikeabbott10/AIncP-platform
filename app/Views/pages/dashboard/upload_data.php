@@ -19,7 +19,7 @@
             <select name="subjectselection" class="form-select" id="subjectselection">
                 <option value="-1" selected>New subject</option>
                 <?php foreach ($subjects as $subj): ?>
-                    <option value="<?=$subj['ID']?>"><?php echo $subj['surname'] .' '.$subj['name'].' - '.$subj['code']?></option>
+                    <option value="<?=$subj['id']?>"><?php echo $subj['surname'] .' '.$subj['name'].' - '.$subj['code']?></option>
                 <?php endforeach ?>
             </select>
         </div>
@@ -107,7 +107,7 @@
                 <select name="data_tag" class="form-select" id="data_tag" form="newsubjectform" required>
                     <option value="" selected>Data Tag:</option>
                     <?php foreach ($tags as $tag): ?>
-                        <option value="<?=$tag['ID']?>"><?php echo $tag['label']?></option>
+                        <option value="<?=$tag['id']?>"><?php echo $tag['label']?></option>
                     <?php endforeach ?>
                 </select>
             </div>

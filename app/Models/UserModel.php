@@ -11,8 +11,8 @@ class UserModel extends Model{
      */
     protected function initialize(){
         $this->table = 'users';
-        $this->primaryKey = 'ID';
-        $this->allowedFields[] = 'ID';
+        $this->primaryKey = 'id';
+        $this->allowedFields[] = 'id';
         $this->allowedFields[] = 'code';
         $this->allowedFields[] = 'password';
     }

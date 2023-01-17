@@ -45,6 +45,8 @@ abstract class BaseController extends Controller{
 
     protected $validation;
 
+    protected $db;
+
     /**
      * Constructor.
      */
@@ -57,6 +59,7 @@ abstract class BaseController extends Controller{
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->validation = \Config\Services::validation();
+        $this->db = \Config\Database::connect();
     }
 
     public function isUserSessionValid() : bool{
@@ -73,6 +76,6 @@ abstract class BaseController extends Controller{
 
     public function loadSubject($id){
         $subjectsModel = new SubjectModel();
-        return $subjectsModel->where('ID', $id)->first();
+        return $subjectsModel->where('id', $id)->first();
     }
 }
