@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title mb-0"></h5>
-            <div class="table-responsive-xxl">
+            <div class="table-responsive-xl">
                 <table class="w-100 table table-bordered subjects-table" style="max-width:100% !important;">
                     <thead>
                         <tr>

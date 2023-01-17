@@ -22,26 +22,26 @@
         </span>
     </td>
     <!-- Gender -->
-    <td class="align-middle p-1" style="width: 4rem; height:0.5rem; overflow:hidden">
+    <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
         <span style="white-space: pre;"><?= $subject['gender'] ?></span>
     </td>
     <!-- Dominance -->
-    <td class="align-middle p-1" style="width: 4rem; height:0.5rem; overflow:hidden">
+    <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
         <span style="white-space: pre;"><?= $subject['dominance'] ?></span>
     </td>
     <!-- aha -->
-    <td class="align-middle p-1" style="width: 4rem; height:0.5rem; overflow:hidden">
+    <td class="align-middle p-1" style="max-width: 2vw; height:0.5rem; overflow:hidden">
         <span style="white-space: pre;"><?= $subject['aha'] ?></span>
     </td>
     <!-- macs -->
-    <td class="align-middle p-1" style="width: 4rem; height:0.5rem; overflow:hidden">
+    <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
         <span style="white-space: pre;"><?= $subject['macs'] ?></span>
     </td>
     <!-- hemi -->
-    <td class="align-middle p-1" style="width: 4rem; height:0.5rem; overflow:hidden">
+    <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
         <span style="white-space: pre;"><?= $subject['hemi'] ?></span>
     </td>
-    <td class="action align-middle p-1 px-2" style="width:2rem; height:2rem; overflow:hidden">
+    <td class="action align-middle p-1 px-2" style="max-width:3rem; height:2rem; overflow:hidden">
         <div class="d-flex justify-content-center">
             <a class="btn btn-primary edit-row p-1 me-1 text-white" style="width:2rem;"
                 href="<?=base_url('dashboard/subjects/'.$subject['ID'].'/tag_data')?>">
