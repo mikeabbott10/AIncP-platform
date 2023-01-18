@@ -28,6 +28,6 @@ jQuery(function ($) {$(function () {
         await fetch(deleteResourceBaseUrl+'/'+$(_this).data('id'),{
             method: 'GET' // warning security issue (csfr)
         })
-        //window.location.href='';
+        window.location.href='';
     })
 })})

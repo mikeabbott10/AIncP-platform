@@ -10,12 +10,11 @@ class SessionModel extends Model{
      * our custom field to the module's model.
      */
     protected function initialize(){
-        $this->table = 'fileportions';
+        $this->table = 'filepaths';
         $this->primaryKey = 'id';
-        $this->allowedFields[] = 'file_id';
-        $this->allowedFields[] = 'tag_id';
+        $this->allowedFields[] = 'path';
+        $this->allowedFields[] = 'subj_id';
         $this->allowedFields[] = 'start_time';
         $this->allowedFields[] = 'end_time';
-        $this->allowedFields[] = 'info';
     }
 }

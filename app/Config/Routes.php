@@ -35,16 +35,18 @@ $routes->get('logout', 'AuthController::logout');
 $routes->get('dashboard', 'SubjectsController::index'); // index dashboard page
 
 $routes->get('dashboard/subject/add', 'SubjectsController::add_subject'); // add subject page
+$routes->post('dashboard/subject/upload', 'SubjectsController::upload_subject_data'); // perform new subject data insert
 $routes->get('dashboard/subject', 'SubjectsController::index'); // all subjects overview page
 $routes->get('dashboard/subject/(:num)', 'SubjectsController::subject_card/$1'); // subject (:num) overview page
-$routes->get('dashboard/subject/delete/(:num)', 'SubjectsController::delete_subject/$1');
-$routes->post('dashboard/subject/upload', 'SubjectsController::upload_subject_data'); // perform new subject data insert
 $routes->post('dashboard/subject/(:num)/upload', 'SubjectsController::upload_subject_data/$1'); // perform existing subject data update
+$routes->get('dashboard/subject/delete/(:num)', 'SubjectsController::delete_subject/$1');
 
 
-$routes->get('dashboard/subject/(:num)/sessions', 'SessionsController::index/$1');
-$routes->get('dashboard/subject/(:num)/sessions/add', 'SessionsController::add_session/$1');
-$routes->get('dashboard/subject/(:num)/sessions/delete/(:num)', 'SessionsController::delete_session/$1/$2');
+$routes->get('dashboard/subject/(:num)/session/add', 'SessionsController::add_session/$1');
+$routes->post('dashboard/subject/(:num)/session/upload_session', 'SessionsController::upload_session_data/$1');
+$routes->post('dashboard/subject/(:num)/session/upload_file', 'SessionsController::upload_file/$1');
+$routes->get('dashboard/subject/(:num)/session', 'SessionsController::index/$1');
+$routes->get('dashboard/subject/(:num)/session/delete/(:num)', 'SessionsController::delete_session/$1/$2');
 
 
 $routes->get('dashboard/upload', 'UploadController::index'); // upload file page

@@ -8,9 +8,9 @@
         </li><!-- End subjects Nav -->
 
         <li class="nav-item">
-            <a class="nav-link <?php echo $currentpage == 'Upload Subject Data' ? '' : 'collapsed'; ?>" href="<?php echo base_url('dashboard/upload')?>">
-                <i class="bi bi-grid"></i>
-                <span>Upload Subject Data</span>
+            <a class="nav-link disabled <?php echo $currentpage == 'x' ? '' : 'collapsed'; ?>" href="<?php echo base_url('dashboard/upload')?>">
+                <i class="bi bi-calendar3"></i>
+                <span>Coming soon...</span>
             </a>
         </li><!-- End upload Nav -->
     </ul>

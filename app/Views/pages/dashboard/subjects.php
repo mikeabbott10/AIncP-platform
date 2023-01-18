@@ -89,7 +89,7 @@
             { data:'hemi', targets: 8 },
             { orderable: false, targets: 9 },
         ],
-        order: [[3, 'desc']]
+        order: [[3, 'asc']]
     }
 </script>
 <script src="<?php echo base_url('assets/js/my_datatables.js'); ?>" defer></script>

@@ -10,6 +10,7 @@
         </div>
         <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
             <form id="signin_form" action="" method="POST" class="my-5">
+                <?= csrf_field() ?>
                 <!-- User code input -->
                 <div class="form-outline mb-4">
                     <input type="text" id="usercode" class="form-control form-control-lg" name="uc" placeholder="User code"/>

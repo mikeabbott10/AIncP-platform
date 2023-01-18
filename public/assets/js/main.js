@@ -131,4 +131,9 @@ const generateUUID = () => {
     onscroll(document, toggleBacktotop)
   }
 
+  $('.spinner-btn-form').on('submit', (event)=>{
+      let _this = $(event.target)
+      $(_this).find('.spinner-btn span').removeClass('d-none');
+  })
+
 })();

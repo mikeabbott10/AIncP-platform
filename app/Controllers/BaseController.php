@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use App\Models\SubjectModel;
+use App\Models\TagModel;
 
 /**
  * Class BaseController
@@ -62,20 +63,25 @@ abstract class BaseController extends Controller{
         $this->db = \Config\Database::connect();
     }
 
-    public function isUserSessionValid() : bool{
+    protected function isUserSessionValid() : bool{
         if ( ! $this->session->get('isLoggedIn') ){
             return false;
         }   
         return true;
     }
 
-    public function loadSubjects(){
+    protected function loadSubjects(){
         $subjectsModel = new SubjectModel();
         return $subjectsModel->findAll();
     }
 
-    public function loadSubject($id){
+    protected function loadSubject($id){
         $subjectsModel = new SubjectModel();
         return $subjectsModel->where('id', $id)->first();
+    }
+
+    protected function loadTags(){
+        $tagsModel = new TagModel();
+        return $tagsModel->findAll();
     }
 }

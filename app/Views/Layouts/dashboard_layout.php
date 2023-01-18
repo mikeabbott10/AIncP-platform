@@ -12,8 +12,8 @@
     <link href="<?php echo base_url('assets/vendor/bootstrap-icons/bootstrap-icons.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/style.css'); ?>" rel="stylesheet">
     <!-- Vendor JS Files -->
-    <script src="<?php echo base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?>" defer></script>
     <script src="<?php echo base_url('assets/vendor/jquery/jquery-3.6.2.min.js'); ?>" defer></script>
+    <script src="<?php echo base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?>" defer></script>
 
     <script src="<?php echo base_url('assets/js/main.js'); ?>" defer></script>
 

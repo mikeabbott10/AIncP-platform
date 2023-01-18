@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Controllers;
-use App\Models\TagModel;
 use App\Models\SubjectModel;
 
 class SubjectsController extends BaseController{
-    protected $helpers = ['form'];
     
     /**
      * show subjects table
@@ -36,6 +34,7 @@ class SubjectsController extends BaseController{
         if(!$data['tags'])
             return redirect()->route('dashboard/subject');
 
+        helper('form');
         $data['errors'] = [];
         return view('pages/dashboard/subject_card', $data);
     }
@@ -65,6 +64,7 @@ class SubjectsController extends BaseController{
         if(!$data['tags'])
             return redirect()->route('dashboard/subject');
 
+        helper('form');
         $data['subject'] = $this->get_empty_subject(); 
         $data['errors'] = [];
         return view('pages/dashboard/subject_card', $data);
@@ -104,21 +104,6 @@ class SubjectsController extends BaseController{
         $model->save($post);
 
         return redirect()->route('dashboard/subject');
-    }
-
-    public function tag_data($id=-1){
-        if( ! $this->isUserSessionValid() || $id==-1)
-            return redirect()->route('/');
-        $data['currentpage'] = 'Subjects';
-        $data['subject'] = $this->loadSubject($id);
-        if(!$data['subject'])
-            return redirect()->route('dashboard/subject');
-        return view('pages/dashboard/tag_data', $data);
-    }
-
-    private function loadTags(){
-        $tagsModel = new TagModel();
-        return $tagsModel->findAll();
     }
 
     private function get_empty_subject(){

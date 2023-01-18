@@ -6,6 +6,7 @@
                     <thead>
                         <tr>
                             <th class="p-1">Tag</th>
+                            <th class="p-1">Notes</th>
                             <th class="p-1">Start time</th>
                             <th class="p-1">End time</th>
                             <th></th>

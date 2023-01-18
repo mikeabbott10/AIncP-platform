@@ -7,7 +7,7 @@
 <link href="<?php echo base_url('assets/vendor/datatables/datatables.min.css'); ?>" rel="stylesheet">
 <script src="<?php echo base_url('assets/vendor/datatables/datatables.min.js'); ?>" defer></script>
 <script>
-    var deleteResourceBaseUrl = '<?=base_url('dashboard/subject/'.$subject['id'].'/sessions/delete');?>';
+    var deleteResourceBaseUrl = '<?=base_url('dashboard/subject/'.$subject['id'].'/session/delete');?>';
 
     // ==============================================================
     // datatables functions
@@ -36,13 +36,13 @@
 ===================================================================== -->
 <?= $this->section('content') ?>
 
-<a class="btn btn-success rounded-pill mb-3" href="<?=base_url('dashboard/session/add')?>"><i class="bi bi-plus-lg"></i> Add a new session</a>
+<a class="btn btn-success rounded-pill mb-3" href="<?=base_url("dashboard/subject/{$subject['id']}/session/add")?>"><i class="bi bi-plus-lg"></i> Add a new session</a>
 <?php
-echo view('Components/session/sessions_table_header.php');
+echo view('Components/session/sessions_table_header');
 foreach ($sessions as $sess){
     echo view_cell('SessionRow::show', ['session'=>$sess, 'subject_id'=>$subject['id']]);
 }
-echo view('Components/session/sessions_table_footer.php');
+echo view('Components/session/sessions_table_footer');
 ?>
 
 <?= $this->endSection() ?>
