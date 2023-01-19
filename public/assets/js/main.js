@@ -133,6 +133,8 @@ const generateUUID = () => {
 
   $('.spinner-btn-form').on('submit', (event)=>{
       let _this = $(event.target)
+      $(_this).find('.spinner-btn').attr('disabled', true);
+      $(_this).find('.spinner-btn').prop('disabled', true);
       $(_this).find('.spinner-btn span').removeClass('d-none');
   })
 

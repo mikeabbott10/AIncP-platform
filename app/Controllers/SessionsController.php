@@ -114,7 +114,14 @@ class SessionsController extends BaseController{
             ]);
 
             // redirect to new session with new file data
-            $data['data'] = $this->getFileData($data['uploaded_fileinfo']->openFile());
+            //$data['data'] = $this->getFileData($data['uploaded_fileinfo']->openFile());
+            $data['data'] = [];
+            $data['controller'] = $this;
+            $data['data_file'] = $data['uploaded_fileinfo']->openFile();
+
+            $data['tags'] = $this->loadTags();
+            if(!$data['tags'])
+                return redirect()->route("dashboard/subject/{$subjId}/session");
 
             $data['subject'] = $this->loadSubject($subjId);
             if(!$data['subject'])
@@ -129,9 +136,15 @@ class SessionsController extends BaseController{
         return redirect()->route("dashboard/subject/{$subjId}/session");
     }
 
-    private function getFileData($splFile){
+    public function getFileDataChunk($splFile, $index){
         $plot = array();
-        while (!$splFile->eof()) {
+        $end_index = $index + 50; // chunk is 50 rows
+        $eof = false;
+        while ($index<$end_index) {
+            if($splFile->eof()){
+                $eof = true;
+                break;
+            }
             $row = $splFile->fgetcsv();
             if(is_null($row[0]) || strcmp($row[0],'datetime')==0)
                 continue;
@@ -141,8 +154,9 @@ class SessionsController extends BaseController{
             $vecSum = $vec_D + $vec_ND;
             $AI = $vecSum==0 ? 0 : 100*($vec_D - $vec_ND)/($vecSum);
             $plot[] = ['x'=>$datetime, 'y'=>floor($AI)];
+            $index++;
         }
-        return $plot;
+        return ['plot'=>$plot, 'next_index'=>$index, 'eof'=>$eof];
     }
 
     private function getVecMag($x,$y,$z){
