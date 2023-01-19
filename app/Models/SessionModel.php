@@ -16,6 +16,6 @@ class SessionModel extends Model{
         $this->allowedFields[] = 'tag_id';
         $this->allowedFields[] = 'start_time';
         $this->allowedFields[] = 'end_time';
-        $this->allowedFields[] = 'info';
+        $this->allowedFields[] = 'notes';
     }
 }

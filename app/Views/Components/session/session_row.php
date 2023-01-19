@@ -30,7 +30,7 @@
 
     <td class="action align-middle p-1 px-2" style="max-width:2vw; height:2rem; overflow:hidden">
         <div class="d-flex justify-content-center">
-            <button class="btn btn-secondary remove-row p-1 text-white me-2" style="width:2rem;"
+            <button class="btn btn-secondary p-1 text-white me-2" style="width:2rem;"
                 data-id="<?=$session['id']?>" disabled>
                 <i class="bi bi-code-slash"></i>
             </button>

@@ -17,8 +17,8 @@
         columnDefs: [
             { orderable: false, targets: 3 },
         ],
-        order: [[1, 'desc']]
-    }
+        order: [[2, 'desc']]
+    };
 </script>
 <script src="<?php echo base_url('assets/js/my_datatables.js'); ?>" defer></script>
 <?= $this->endSection() ?>

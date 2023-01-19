@@ -14,11 +14,7 @@ class SessionsController extends BaseController{
     public function index($subjId){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
-        $data['currentpage'] = 'Subjects';
-
-        $data['sessions'] = $this->loadSessionsFromSubject($subjId);
-        $data['subject'] = $this->loadSubject($subjId);
-        return view('pages/dashboard/sessions', $data);   
+        return $this->showSubjectSessionsView($subjId);
     }
 
     /**
@@ -29,11 +25,11 @@ class SessionsController extends BaseController{
     public function delete_session($subjId, $id=-1){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
-        $data['currentpage'] = 'Subjects';
-        
+
         $sessionModel = new SessionModel();
         $sessionModel->delete($id);
-        return redirect()->route("dashboard/subject/{$subjId}/session");
+        
+        return $this->showSubjectSessionsView($subjId);
     }
 
     /**
@@ -43,19 +39,17 @@ class SessionsController extends BaseController{
     public function add_session($subjId){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
-        $data['currentpage'] = 'Subjects';
 
         $data['tags'] = $this->loadTags();
         if(!$data['tags'])
-            return redirect()->route("dashboard/subject/{$subjId}/session");
+            return $this->showSubjectSessionsView($subjId, $data);
         
         $data['subject'] = $this->loadSubject($subjId);
         if(!$data['subject'])
-            return redirect()->route("dashboard/subject/{$subjId}/session");
+            return $this->showSubjectSessionsView($subjId, $data);
 
         helper('form');
-        $data['errors'] = [];
-        return view('pages/dashboard/new_session', $data);
+        return $this->showSubjectAddSessionView($subjId, $data);
     }
 
     /**
@@ -65,10 +59,10 @@ class SessionsController extends BaseController{
     public function upload_file($subjId){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
-        $data['currentpage'] = 'Subjects';
         if (! $this->request->is('post')) {
             // The form is not submitted
-            return redirect()->route("dashboard/subject/{$subjId}/session");
+            $data['errors'] = ['Error while submitting the form'];
+            return $this->showSubjectSessionsView($subjId, $data);
         }
 
         $validationRule = [
@@ -94,8 +88,8 @@ class SessionsController extends BaseController{
         ];
 
         if (! $this->validate($validationRule)) {
-            //$data['errors'] = $this->validator->getErrors();
-            return redirect()->route("dashboard/subject/{$subjId}/session");
+            $data['errors'] = $this->validator->getErrors();
+            return $this->showSubjectSessionsView($subjId, $data);
         }
 
         $file = $this->request->getFile('data_file');
@@ -112,28 +106,64 @@ class SessionsController extends BaseController{
                 'path'=> $data['uploaded_fileinfo']->getFilename(),
                 'subj_id'=>$subjId
             ]);
+            $insertedRowId = $filepathModel->insertID();
 
             // redirect to new session with new file data
             //$data['data'] = $this->getFileData($data['uploaded_fileinfo']->openFile());
             $data['data'] = [];
             $data['controller'] = $this;
             $data['data_file'] = $data['uploaded_fileinfo']->openFile();
+            $data['file_id'] = $insertedRowId;
 
             $data['tags'] = $this->loadTags();
-            if(!$data['tags'])
-                return redirect()->route("dashboard/subject/{$subjId}/session");
+            if(!$data['tags']){
+                return $this->showSubjectSessionsView($subjId, $data);
+            }
 
             $data['subject'] = $this->loadSubject($subjId);
-            if(!$data['subject'])
-                return redirect()->route("dashboard/subject/{$subjId}/session");
+            if(!$data['subject']){
+                return $this->showSubjectSessionsView($subjId, $data);
+            }
 
             helper('form');
-            $data['errors'] = [];
-            return view('pages/dashboard/new_session', $data);
+            return $this->showSubjectAddSessionView($subjId, $data);
         }
 
-        //$data['errors'] = 'The file has already been moved.';
-        return redirect()->route("dashboard/subject/{$subjId}/session");
+        $data['errors'] = 'The file has already been moved.';
+        return $this->showSubjectSessionsView($subjId, $data);
+    }
+
+    /**
+     * upload session data
+     * @param subjId the id of the subject
+     */
+    public function upload_session_data($subjId){
+        if( ! $this->isUserSessionValid())
+            return redirect()->route('/');
+        if (! $this->request->is('post')) {
+            // The form is not submitted
+            $data['errors'] = ['Error while submitting the form'];
+            return $this->showSubjectSessionsView($subjId, $data);
+        }
+
+        // get data
+        $post = $this->request->getPost([
+            'file_id', 'start_time', 'end_time', 'tag_id', 'notes'
+        ]);
+
+        // Checks whether the submitted data passed the validation rules.
+        if (! $this->validation->run($post, 'session_rules')) {
+            // The validation fails, so returns the form.
+            $data['errors'] = ['Error while submitting the form'];
+            return $this->showSubjectSessionsView($subjId, $data);
+        }
+
+        // save new session
+        $sessionModel = model(SessionModel::class);
+        $sessionModel->save($post);
+        
+        return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
+        //return redirect()->route("dashboard/subject/{$subjId}/session"); // won't work here idk why
     }
 
     public function getFileDataChunk($splFile, $index){
@@ -183,5 +213,21 @@ class SessionsController extends BaseController{
         // Run the Query
         $results = $pQuery->execute($id);
         return $results->getResultArray();
+    }
+
+    private function showSubjectSessionsView($subjId, $data=[]){
+        if(!isset($data['errors']))
+            $data['errors'] = [];
+        $data['currentpage'] = 'Subjects';
+        $data['sessions'] = $this->loadSessionsFromSubject($subjId);
+        $data['subject'] = $this->loadSubject($subjId);
+        return view('pages/dashboard/sessions', $data);
+    }
+
+    private function showSubjectAddSessionView($subjId, $data=[]){
+        if(!isset($data['errors']))
+            $data['errors'] = [];
+        $data['currentpage'] = 'Subjects';
+        return view('pages/dashboard/new_session', $data);
     }
 }

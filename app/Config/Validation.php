@@ -48,4 +48,10 @@ class Validation extends BaseConfig
         'gender' => 'max_length[1]',
         'dominance' => 'max_length[1]'
     ];
+
+
+    public $session_rules = [
+        'tag_id'=>'required',
+        'notes'=>'max_length[255]'
+    ];
 }
