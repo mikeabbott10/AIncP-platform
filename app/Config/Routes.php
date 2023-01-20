@@ -45,6 +45,8 @@ $routes->get('dashboard/subject/delete/(:num)', 'SubjectsController::delete_subj
 $routes->get('dashboard/subject/(:num)/session/add', 'SessionsController::add_session/$1');
 $routes->post('dashboard/subject/(:num)/session/upload_session', 'SessionsController::upload_session_data/$1');
 $routes->post('dashboard/subject/(:num)/session/upload_file', 'SessionsController::upload_file/$1');
+$routes->get('dashboard/subject/(:num)/session/getData', 'SessionsController::get_plot_data');
+$routes->get('dashboard/subject/(:num)/session/getData/(:num)/(:num)', 'SessionsController::get_plot_data/$2/$3');
 $routes->get('dashboard/subject/(:num)/session', 'SessionsController::index/$1');
 $routes->get('dashboard/subject/(:num)/session/delete/(:num)', 'SessionsController::delete_session/$1/$2');
 

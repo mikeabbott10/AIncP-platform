@@ -5,6 +5,7 @@ use CodeIgniter\Database\Query;
 use App\Models\SessionModel;
 use App\Models\FilePathModel;
 use CodeIgniter\Files\File;
+use DateTimeImmutable;
 
 class SessionsController extends BaseController{
     /**
@@ -29,7 +30,7 @@ class SessionsController extends BaseController{
         $sessionModel = new SessionModel();
         $sessionModel->delete($id);
         
-        return $this->showSubjectSessionsView($subjId);
+        return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
     }
 
     /**
@@ -42,11 +43,11 @@ class SessionsController extends BaseController{
 
         $data['tags'] = $this->loadTags();
         if(!$data['tags'])
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         
         $data['subject'] = $this->loadSubject($subjId);
         if(!$data['subject'])
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
 
         helper('form');
         return $this->showSubjectAddSessionView($subjId, $data);
@@ -62,7 +63,7 @@ class SessionsController extends BaseController{
         if (! $this->request->is('post')) {
             // The form is not submitted
             $data['errors'] = ['Error while submitting the form'];
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         }
 
         $validationRule = [
@@ -89,7 +90,7 @@ class SessionsController extends BaseController{
 
         if (! $this->validate($validationRule)) {
             $data['errors'] = $this->validator->getErrors();
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         }
 
         $file = $this->request->getFile('data_file');
@@ -109,20 +110,20 @@ class SessionsController extends BaseController{
             $insertedRowId = $filepathModel->insertID();
 
             // redirect to new session with new file data
-            //$data['data'] = $this->getFileData($data['uploaded_fileinfo']->openFile());
             $data['data'] = [];
             $data['controller'] = $this;
-            $data['data_file'] = $data['uploaded_fileinfo']->openFile();
             $data['file_id'] = $insertedRowId;
+            // update data file for this session
+            $this->session->set('data_filepath', $filepath);
 
             $data['tags'] = $this->loadTags();
             if(!$data['tags']){
-                return $this->showSubjectSessionsView($subjId, $data);
+                return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
             }
 
             $data['subject'] = $this->loadSubject($subjId);
             if(!$data['subject']){
-                return $this->showSubjectSessionsView($subjId, $data);
+                return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
             }
 
             helper('form');
@@ -130,7 +131,7 @@ class SessionsController extends BaseController{
         }
 
         $data['errors'] = 'The file has already been moved.';
-        return $this->showSubjectSessionsView($subjId, $data);
+        return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
     }
 
     /**
@@ -143,7 +144,7 @@ class SessionsController extends BaseController{
         if (! $this->request->is('post')) {
             // The form is not submitted
             $data['errors'] = ['Error while submitting the form'];
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         }
 
         // get data
@@ -155,7 +156,7 @@ class SessionsController extends BaseController{
         if (! $this->validation->run($post, 'session_rules')) {
             // The validation fails, so returns the form.
             $data['errors'] = ['Error while submitting the form'];
-            return $this->showSubjectSessionsView($subjId, $data);
+            return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         }
 
         // save new session
@@ -166,27 +167,100 @@ class SessionsController extends BaseController{
         //return redirect()->route("dashboard/subject/{$subjId}/session"); // won't work here idk why
     }
 
-    public function getFileDataChunk($splFile, $index){
+    public function get_plot_data($start_time=-1, $end_time=-1){
+        if( ! $this->isUserSessionValid())
+            return redirect()->route('/');
+
+        // retrieve file from session
+        if(!$this->session->has('data_filepath'))
+           return redirect()->route('dashboard');
+
+        $file = new File($this->session->get('data_filepath'));
+        $file = $file->openFile();
+        
+        if($start_time<0 || $end_time<0){
+            $start_index = 0;
+            $file->seek($file->getSize());
+            $end_index = $file->key();
+        }else{
+            [$start_index, $end_index] = $this->convertTimeToIndexes($file, $start_time, $end_time);
+        }
+        $this->session->remove('data_filepath');
+        return json_encode($this->getFileDataChunk($file, $start_index, $end_index));
+    }
+
+    private function getFileDataChunk($splFile, $start_index, $end_index){
         $plot = array();
-        $end_index = $index + 50; // chunk is 50 rows
-        $eof = false;
-        while ($index<$end_index) {
+        $max_number_of_rendered_points = 500;
+
+        $splFile->seek($splFile->getSize());
+        if($splFile->key() < $start_index || $start_index > $end_index || $splFile->key() > $end_index){
+            // if unstable indexes, get the whole file
+            $start_index = 0;
+            $end_index = $splFile->key();
+        }
+        $splFile->rewind(); // rewind back to the first line
+
+        // init iterations values
+        $index = $start_index;
+        $step_size = floor(($end_index - $start_index) / $max_number_of_rendered_points);
+        if($step_size<=0)
+            $step_size=1;
+
+        while ($index < $end_index) {
             if($splFile->eof()){
-                $eof = true;
                 break;
             }
+            $splFile->seek($index);
             $row = $splFile->fgetcsv();
-            if(is_null($row[0]) || strcmp($row[0],'datetime')==0)
+            echo $splFile->key().'<br>';
+            /*
+            if(strcmp($row[0], 'datetime')){
                 continue;
+            }
             list($datetime, $x_D, $y_D, $z_D, $x_ND, $y_ND, $z_ND) = $row;
             $vec_D = $this->getVecMag($x_D, $y_D, $z_D);
             $vec_ND = $this->getVecMag($x_ND, $y_ND, $z_ND);
             $vecSum = $vec_D + $vec_ND;
             $AI = $vecSum==0 ? 0 : 100*($vec_D - $vec_ND)/($vecSum);
-            $plot[] = ['x'=>$datetime, 'y'=>floor($AI)];
-            $index++;
+            $t = DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $datetime);
+            if($t)
+                $plot[] = ['x'=>$t->format('U')*1000, 'y'=>floor($AI)];*/
+            $index += $step_size;
         }
-        return ['plot'=>$plot, 'next_index'=>$index, 'eof'=>$eof];
+        return $plot;
+    }
+
+    private function convertTimeToIndexes($splFile, $start_time, $end_time){
+        $splFile->rewind(); // rewind back to the first line
+        $start_index = -1;
+        $end_index = -1;
+        $currentIndex = -1;
+        while (true) {
+            $currentIndex++;
+            if($splFile->eof()){
+                break;
+            }
+            $row = $splFile->fgetcsv();
+            if(strcmp($row[0], 'datetime')){
+                continue;
+            }
+            $datetime = $row[0];
+            $t = DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $datetime);
+            $datetime = $t->format('U')*1000;
+            if($datetime < $start_time)
+                continue;
+            if($start_index < 0){
+                $start_index = $currentIndex;
+                continue;
+            }
+            if($datetime > $end_time){
+                $end_index = $currentIndex;
+                break;
+            }
+        }
+        $splFile->rewind(); // rewind back to the first line
+        return [$start_index, $end_index];
     }
 
     private function getVecMag($x,$y,$z){

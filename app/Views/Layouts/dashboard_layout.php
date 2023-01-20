@@ -26,7 +26,7 @@
     <main id="main" class="main">
         <!-- Page Title -->
         <div class="pagetitle">
-            <h1>Dashboard</h1>
+            <h1><?= $this->renderSection('page_title') ?></h1>
             <nav>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><?= $currentpage; ?></li>

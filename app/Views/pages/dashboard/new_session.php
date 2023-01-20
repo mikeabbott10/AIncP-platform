@@ -8,38 +8,23 @@
 <?php if (!isset($data)): ?>
     <script src="<?php echo base_url('assets/js/dashboard/upload_file.js'); ?>" defer></script>
 <?php else: ?>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js" defer></script>
-    <script src="https://canvasjs.com/assets/script/jquery-ui.1.11.2.min.js" defer></script>
+    <script src="https://code.highcharts.com/stock/highstock.js" defer></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js" defer></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js" defer></script>
     <script>
-        var dataPoints = [];
-        <?php
-        // need this logic to render huge amount of data
-        $chunk_index = 0;
-        while(true){
-            $tmp = $controller->getFileDataChunk($data_file, $chunk_index);
-            $plot = $tmp['plot'];
-            $chunk_index = $tmp['next_index'];
-            $end = $tmp['eof'];
-            if($end){
-                $data_file = null;
-                break;
-            }?>
-            <?=json_encode($plot)?>.forEach(element => {
-                dataPoints.push({
-                    x: new Date(element.x),
-                    y: element.y
-                })
-            });
-        <?php } ?>
-        console.log(dataPoints)
+        const dataURL = '<?=base_url("/dashboard/subject/{$subject['id']}/session/getData")?>';
     </script>
-    <script src="<?php echo base_url('assets/js/dashboard/my_stockchart.js'); ?>" defer></script>
+    <!-- <script src="<?php //echo base_url('assets/js/dashboard/my_highchart.js'); ?>" defer></script> -->
 <?php endif ?>
 <?= $this->endSection() ?>
 
 <!-- ===================================================================
-## Page breadcrumb
+## Page head
 ===================================================================== -->
+<?= $this->section('page_title') ?>
+Save new session
+<?= $this->endSection() ?>
+
 <?= $this->section('breadcrumb') ?>
 <li class="breadcrumb-item">Subject <?= $subject['code']?></li>
 <li class="breadcrumb-item active">New session</li>
@@ -55,13 +40,8 @@ if(!isset($data)){
     echo view('Components/upload_file_modal', ['subject' => $subject]);
 }else{ ?>
     <div class="w-100 d-flex flex-column align-items-center justify-content-center border border-secondary rounded bg-white bg-opacity-50">
-        
-        <div id="stockChartContainer" style="height: 30vw; width: 95%;">
-            <!-- spinner -->
-            <div class="d-flex justify-content-center align-items-center w-100 h-100">
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            </div>
-        </div>
+        <a href="<?=base_url("/dashboard/subject/{$subject['id']}/session/getData")?>">prova controller</a>
+        <div id="container" style="height: 30vw; width: 95%;"></div>
 
         <?= form_open("dashboard/subject/{$subject['id']}/session/upload_session", 
             [   
