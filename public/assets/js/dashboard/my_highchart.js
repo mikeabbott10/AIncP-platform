@@ -1,3 +1,5 @@
+// source https://www.highcharts.com/demo/stock/lazy-loading
+
 /**
  * Load new data depending on the selected min and max
  */
@@ -5,22 +7,20 @@ function afterSetExtremes(e) {
     const { chart } = e.target;
     chart.showLoading('Loading data from server...');
     console.log(`${dataURL}/${Math.round(e.min)}/${Math.round(e.max)}`)
+    $('input[name=start_time]').val(Math.round(e.min));
+    $('input[name=end_time]').val(Math.round(e.max));
     fetch(`${dataURL}/${Math.round(e.min)}/${Math.round(e.max)}`)
     .then(res => res.ok && res.json())
     .then(data => {
-        console.log(data)
+        //console.log(data)
         chart.series[0].setData(data);
         chart.hideLoading();
     }).catch(error => console.error(error.message));
 }
 
 fetch(dataURL)
-.then(res => {console.log('hiii'+res); return res.json()})
+.then(res => res.ok && res.json())
 .then(data => {
-    console.log('helo'+data)
-    // Add a null value for the end date
-    data.push([Date.UTC(2011, 9, 14, 18), null, null, null, null]);
-
     // create the chart
     Highcharts.stockChart('container', {
         chart: {
@@ -39,17 +39,21 @@ fetch(dataURL)
         },
 
         title: {
-            text: 'AAPL history by the minute from 1998 to 2011',
+            text: 'Asymmetry index in time',
             align: 'left'
         },
 
         subtitle: {
-            text: 'Displaying 1.7 million data points in Highcharts Stock by async server loading',
+            text: 'Select the range, fill the form and save a new session',
             align: 'left'
         },
 
         rangeSelector: {
             buttons: [{
+                type: 'minute',
+                count: 1,
+                text: '1min'
+            }, {
                 type: 'hour',
                 count: 1,
                 text: '1h'
@@ -69,11 +73,12 @@ fetch(dataURL)
             events: {
                 afterSetExtremes: afterSetExtremes
             },
-            minRange: 3600 * 1000 // one hour
+            minRange: 60 * 1000 // one minute
         },
 
         yAxis: {
-            floor: 0
+            ceiling: 120,
+            floor: -120
         },
 
         series: [{

@@ -75,22 +75,23 @@
 
             <div class="col-md-4 my-2">
                 <label class="form-label" for="aha">AHA</label>
-                <input type="number" name="aha" placeholder="AHA value" class="form-control" id="aha" min=0  value="<?=$subject['aha']?>">
+                <input type="number" name="aha" placeholder="AHA value" class="form-control" id="aha" min=0  value="<?=$subject['aha']==-1?'':$subject['aha']?>">
             </div>
 
             <div class="col-md-4 my-2">
                 <label class="form-label" for="macs">MACS</label>
-                <input type="number" name="macs" placeholder="MACS class" class="form-control" id="macs" min=0  value="<?=$subject['macs']?>">
+                <input type="number" name="macs" placeholder="MACS class" class="form-control" id="macs" min=0  value="<?=$subject['macs']==-1?'':$subject['macs']?>">
             </div>
 
             <div class="col-md-4 my-2">
                 <label class="form-label" for="hemi">hemi</label>
-                <input type="number" name="hemi" placeholder="hemi" class="form-control" id="hemi" min=0  value="<?=$subject['hemi']?>">
+                <input type="number" name="hemi" placeholder="hemi" class="form-control" id="hemi" min=0  value="<?=$subject['hemi']==-1?'':$subject['hemi']?>">
             </div>
         </div>
 
-        <div class="col-md-2 mt-4 mb-2">
-            <input class="btn btn-primary w-100" type="submit" value="Submit">
+        <div class="d-flex justify-content-center col-md-5 mt-4 mb-2">
+            <input class="btn btn-primary me-2" type="submit" value="Submit">
+            <input class="btn btn-danger" type="reset" value="Reset">
         </div>
     </form>
 </div>

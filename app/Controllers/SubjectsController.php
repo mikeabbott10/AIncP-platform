@@ -97,6 +97,15 @@ class SubjectsController extends BaseController{
             return view('pages/dashboard/subject_card', $data);
         }
 
+        if(strcmp($post['aha'],'')==0)
+            $post['aha'] = -1;
+
+        if(strcmp($post['macs'],'')==0)
+            $post['macs'] = -1;
+
+        if(strcmp($post['hemi'],'')==0)
+            $post['hemi'] = -1;
+
         // save new subject
         $model = model(SubjectModel::class);
         if($id!=-1)
@@ -113,9 +122,9 @@ class SubjectsController extends BaseController{
             'surname' => '',
             'code' => '',
             'dominance' => '',
-            'macs' => '',
-            'aha' => '',
-            'hemi' => '',
+            'macs' => -1,
+            'aha' => -1,
+            'hemi' => -1,
             'gender' => ''
         ];
     }

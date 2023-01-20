@@ -31,15 +31,15 @@
     </td>
     <!-- aha -->
     <td class="align-middle p-1" style="max-width: 2vw; height:0.5rem; overflow:hidden">
-        <span style="white-space: pre;"><?= $subject['aha'] ?></span>
+        <span style="white-space: pre;"><?= $subject['aha']==-1 ? '' : $subject['aha'] ?></span>
     </td>
     <!-- macs -->
     <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
-        <span style="white-space: pre;"><?= $subject['macs'] ?></span>
+        <span style="white-space: pre;"><?= $subject['macs']==-1 ? '' : $subject['macs'] ?></span>
     </td>
     <!-- hemi -->
     <td class="align-middle p-1" style="max-width: 1vw; height:0.5rem; overflow:hidden">
-        <span style="white-space: pre;"><?= $subject['hemi'] ?></span>
+        <span style="white-space: pre;"><?= $subject['hemi']==-1 ? '' : $subject['hemi'] ?></span>
     </td>
     <td class="action align-middle p-1 px-2" style="max-width:3.5vw; height:2rem; overflow:hidden">
         <div class="d-flex justify-content-center">

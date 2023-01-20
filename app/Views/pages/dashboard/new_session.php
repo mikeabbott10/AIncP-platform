@@ -14,7 +14,7 @@
     <script>
         const dataURL = '<?=base_url("/dashboard/subject/{$subject['id']}/session/getData")?>';
     </script>
-    <!-- <script src="<?php //echo base_url('assets/js/dashboard/my_highchart.js'); ?>" defer></script> -->
+    <script src="<?php echo base_url('assets/js/dashboard/my_highchart.js'); ?>" defer></script>
 <?php endif ?>
 <?= $this->endSection() ?>
 
@@ -40,17 +40,21 @@ if(!isset($data)){
     echo view('Components/upload_file_modal', ['subject' => $subject]);
 }else{ ?>
     <div class="w-100 d-flex flex-column align-items-center justify-content-center border border-secondary rounded bg-white bg-opacity-50">
-        <a href="<?=base_url("/dashboard/subject/{$subject['id']}/session/getData")?>">prova controller</a>
         <div id="container" style="height: 30vw; width: 95%;"></div>
 
         <?= form_open("dashboard/subject/{$subject['id']}/session/upload_session", 
             [   
                 'method'=>'post',
-                'class'=>"w-100 d-flex flex-column align-items-center justify-content-center py-2 pb-3 mt-4", 
+                'class'=>"w-100 d-flex flex-column align-items-center justify-content-center py-2 pb-3 mt-1 spinner-btn-form", 
                 'id'=>"newsessionform",
                 'style'=>"--bs-border-opacity: .3;"
             ]) ?>
             <?= csrf_field() ?>
+
+            <div class="form__group field w-75 mb-4 mt-0">
+                <input type="input" class="form__field" placeholder="Notes" name="notes" id="notes" maxlength="200" />
+                <label for="notes" class="form__label label-stay">Notes</label>
+            </div>
 
             <div class="d-flex justify-content-center col-md-12">
                 <div class="col-md-4">
@@ -68,13 +72,10 @@ if(!isset($data)){
             <input type="hidden" name="start_time"/>
             <input type="hidden" name="end_time"/>
 
-            <div class="form__group field w-75">
-                <input type="input" class="form__field" placeholder="Notes" name="notes" id="notes" maxlength="200" />
-                <label for="notes" class="form__label label-stay">Notes</label>
-            </div>
-
             <div class="col-md-2 mt-4 mb-2">
-                <input class="btn btn-primary w-100" type="submit" value="Submit">
+                <button class="btn btn-primary w-100 spinner-btn" type="submit">
+                    <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true"></span>Submit
+                </button>
             </div>
         </form>
     </div>

@@ -151,6 +151,9 @@ class SessionsController extends BaseController{
         $post = $this->request->getPost([
             'file_id', 'start_time', 'end_time', 'tag_id', 'notes'
         ]);
+        
+        $post['start_time'] = date("Y-m-d H:i:s", substr($post['start_time'], 0, -3));
+        $post['end_time'] = date("Y-m-d H:i:s", substr($post['end_time'], 0, -3));
 
         // Checks whether the submitted data passed the validation rules.
         if (! $this->validation->run($post, 'session_rules')) {
@@ -162,12 +165,14 @@ class SessionsController extends BaseController{
         // save new session
         $sessionModel = model(SessionModel::class);
         $sessionModel->save($post);
+
+        $this->session->remove('data_filepath');
         
         return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
         //return redirect()->route("dashboard/subject/{$subjId}/session"); // won't work here idk why
     }
 
-    public function get_plot_data($start_time=-1, $end_time=-1){
+    public function get_plot_data($subjId, $start_time=-1, $end_time=-1){
         if( ! $this->isUserSessionValid())
             return redirect()->route('/');
 
@@ -185,8 +190,9 @@ class SessionsController extends BaseController{
         }else{
             [$start_index, $end_index] = $this->convertTimeToIndexes($file, $start_time, $end_time);
         }
-        $this->session->remove('data_filepath');
-        return json_encode($this->getFileDataChunk($file, $start_index, $end_index));
+
+        echo json_encode($this->getFileDataChunk($file, $start_index, $end_index));
+        return; 
     }
 
     private function getFileDataChunk($splFile, $start_index, $end_index){
@@ -194,16 +200,17 @@ class SessionsController extends BaseController{
         $max_number_of_rendered_points = 500;
 
         $splFile->seek($splFile->getSize());
-        if($splFile->key() < $start_index || $start_index > $end_index || $splFile->key() > $end_index){
+        if($splFile->key() < $start_index || $start_index > $end_index || $splFile->key() < $end_index){
             // if unstable indexes, get the whole file
             $start_index = 0;
             $end_index = $splFile->key();
         }
         $splFile->rewind(); // rewind back to the first line
 
+        
         // init iterations values
         $index = $start_index;
-        $step_size = floor(($end_index - $start_index) / $max_number_of_rendered_points);
+        $step_size = ceil(($end_index - $start_index) / $max_number_of_rendered_points);
         if($step_size<=0)
             $step_size=1;
 
@@ -213,9 +220,8 @@ class SessionsController extends BaseController{
             }
             $splFile->seek($index);
             $row = $splFile->fgetcsv();
-            echo $splFile->key().'<br>';
-            /*
-            if(strcmp($row[0], 'datetime')){
+            if(strcmp($row[0], 'datetime')==0){
+                $index += $step_size;
                 continue;
             }
             list($datetime, $x_D, $y_D, $z_D, $x_ND, $y_ND, $z_ND) = $row;
@@ -225,7 +231,7 @@ class SessionsController extends BaseController{
             $AI = $vecSum==0 ? 0 : 100*($vec_D - $vec_ND)/($vecSum);
             $t = DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $datetime);
             if($t)
-                $plot[] = ['x'=>$t->format('U')*1000, 'y'=>floor($AI)];*/
+                $plot[] = [$t->format('U')*1000, floor($AI)];
             $index += $step_size;
         }
         return $plot;
@@ -242,11 +248,13 @@ class SessionsController extends BaseController{
                 break;
             }
             $row = $splFile->fgetcsv();
-            if(strcmp($row[0], 'datetime')){
+            if(strcmp($row[0], 'datetime')==0){
                 continue;
             }
             $datetime = $row[0];
             $t = DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $datetime);
+            if(!$t)
+                continue;
             $datetime = $t->format('U')*1000;
             if($datetime < $start_time)
                 continue;
@@ -259,6 +267,9 @@ class SessionsController extends BaseController{
                 break;
             }
         }
+        if($end_time < 0)
+            $end_time = $currentIndex-1;
+        
         $splFile->rewind(); // rewind back to the first line
         return [$start_index, $end_index];
     }
