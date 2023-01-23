@@ -53,6 +53,8 @@ abstract class BaseController extends Controller{
      */
     public function initController(RequestInterface $request1, ResponseInterface $response, LoggerInterface $logger)
     {
+        $this->helpers = array_merge($this->helpers, ['setting']);
+
         // Do Not Edit This Line
         parent::initController($request1, $response, $logger);
 
@@ -61,13 +63,6 @@ abstract class BaseController extends Controller{
         $this->request = \Config\Services::request();
         $this->validation = \Config\Services::validation();
         $this->db = \Config\Database::connect();
-    }
-
-    protected function isUserSessionValid() : bool{
-        if ( ! $this->session->get('isLoggedIn') ){
-            return false;
-        }   
-        return true;
     }
 
     protected function loadSubjects(){

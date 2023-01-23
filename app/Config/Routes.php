@@ -29,10 +29,11 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'AuthController::index');
-$routes->post('/', 'AuthController::index');
-$routes->get('logout', 'AuthController::logout');
-$routes->get('dashboard', 'SubjectsController::index'); // index dashboard page
+service('auth')->routes($routes);
+
+$routes->get('/', 'SubjectsController::index'); // index dashboard page
+$routes->get('logout', 'SubjectsController::logoutAction'); // index dashboard page
+
 
 $routes->get('dashboard/subject/add', 'SubjectsController::add_subject'); // add subject page
 $routes->post('dashboard/subject/upload', 'SubjectsController::upload_subject_data'); // perform new subject data insert

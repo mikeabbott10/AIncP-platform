@@ -9,8 +9,6 @@ class SubjectsController extends BaseController{
      * show subjects table
      */
     public function index(){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Subjects';
         $data['subjects'] = $this->loadSubjects();
         return view('pages/dashboard/subjects', $data);
@@ -20,8 +18,6 @@ class SubjectsController extends BaseController{
      * @param id
     */
     public function subject_card($id=-1){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Subjects';
         if($id==-1)
             return redirect()->route('dashboard/subject');
@@ -44,8 +40,6 @@ class SubjectsController extends BaseController{
      * @param id
      */
     public function delete_subject($id=-1){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Subjects';
         
         $subjectModel = new SubjectModel();
@@ -57,8 +51,6 @@ class SubjectsController extends BaseController{
      * add subject
      */
     public function add_subject(){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Subjects';
         $data['tags'] = $this->loadTags();
         if(!$data['tags'])
@@ -75,8 +67,6 @@ class SubjectsController extends BaseController{
      * @param id (optional)
      */
     public function upload_subject_data($id=-1){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Subjects';
         if (! $this->request->is('post')) {
             // The form is not submitted

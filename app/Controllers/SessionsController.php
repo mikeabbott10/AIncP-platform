@@ -13,8 +13,6 @@ class SessionsController extends BaseController{
      * @param subjId the id of the subject
      */
     public function index($subjId){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         return $this->showSubjectSessionsView($subjId);
     }
 
@@ -24,9 +22,6 @@ class SessionsController extends BaseController{
      * @param id the id of the session we want to remove
      */
     public function delete_session($subjId, $id=-1){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
-
         $sessionModel = new SessionModel();
         $sessionModel->delete($id);
         
@@ -38,9 +33,6 @@ class SessionsController extends BaseController{
      * @param subjId the id of the subject
      */
     public function add_session($subjId){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
-
         $data['tags'] = $this->loadTags();
         if(!$data['tags'])
             return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
@@ -58,8 +50,6 @@ class SessionsController extends BaseController{
      * @param subjId the id of the subject
      */
     public function upload_file($subjId){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         if (! $this->request->is('post')) {
             // The form is not submitted
             $data['errors'] = ['Error while submitting the form'];
@@ -139,8 +129,6 @@ class SessionsController extends BaseController{
      * @param subjId the id of the subject
      */
     public function upload_session_data($subjId){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         if (! $this->request->is('post')) {
             // The form is not submitted
             $data['errors'] = ['Error while submitting the form'];
@@ -173,9 +161,6 @@ class SessionsController extends BaseController{
     }
 
     public function get_plot_data($subjId, $start_time=-1, $end_time=-1){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
-
         // retrieve file from session
         if(!$this->session->has('data_filepath'))
            return redirect()->route('dashboard');

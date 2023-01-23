@@ -3,6 +3,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$0 [L]
 
+Options +FollowSymLinks -MultiViews
+# Turn mod_rewrite on
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^(.*)$ /personale/aincp/public/$1 [L,NC,R=302]
+
 # To prevent access to .env and other files
 <Files .*>
 # Apache 2.2

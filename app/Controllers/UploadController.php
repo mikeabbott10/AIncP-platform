@@ -19,8 +19,6 @@ class UploadController extends BaseController{
     }
 
     public function index(){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         $data['currentpage'] = 'Upload Subject Data';
         $data['errors'] = [];
         // get data from db
@@ -31,8 +29,6 @@ class UploadController extends BaseController{
     }
 
     public function upload(){
-        if( ! $this->isUserSessionValid())
-            return redirect()->route('/');
         
         $data['currentpage'] = 'Upload Subject Data';
 

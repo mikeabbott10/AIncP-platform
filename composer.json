@@ -10,7 +10,9 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "laminas/laminas-escaper": "^2.9",
-        "psr/log": "^1.1"
+        "psr/log": "^1.1",
+        "codeigniter4/shield": "^1.0@beta",
+        "codeigniter4/settings": "^2.1"
     },
     "require-dev": {
         "kint-php/kint": "^5.0.1",
@@ -19,7 +21,7 @@
         "friendsofphp/php-cs-fixer": "3.13.0",
         "mikey179/vfsstream": "^1.6",
         "nexusphp/cs-config": "^3.6",
-        "phpunit/phpunit": "^9.1",
+        "phpunit/phpunit": "^9.5",
         "predis/predis": "^1.1 || ^2.0"
     },
     "suggest": {
@@ -60,5 +62,7 @@
         "forum": "https://forum.codeigniter.com/",
         "source": "https://github.com/codeigniter4/CodeIgniter4",
         "slack": "https://codeigniterchat.slack.com"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

@@ -1,3 +1,4 @@
+lore
 <?php
 
 use CodeIgniter\Test\CIUnitTestCase;
