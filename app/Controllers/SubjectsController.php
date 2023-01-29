@@ -26,9 +26,18 @@ class SubjectsController extends BaseController{
         if(!$data['subject'])
             return redirect()->route('dashboard/subject');
 
-        $data['tags'] = $this->loadTags();
-        if(!$data['tags'])
-            return redirect()->route('dashboard/subject');
+        helper('form');
+        $data['errors'] = [];
+        return view('pages/dashboard/subject_card', $data);
+    }
+
+    /** show subject card
+     * @param id
+    */
+    public function stub_subject_card($subj){
+        $data['currentpage'] = 'Subjects';
+
+        $data['subject'] = $subj;
 
         helper('form');
         $data['errors'] = [];

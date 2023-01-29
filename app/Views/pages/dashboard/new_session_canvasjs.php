@@ -13,6 +13,10 @@
     <script>
         var dataPoints = [];
         <?php
+        // notes:   at this point i am consciously breaking the mvc pattern
+        //          (calling a controller method from this view) 
+        //          in exchange for convenient facilitation.
+
         // need this logic to render huge amount of data
         $chunk_index = 0;
         while(true){

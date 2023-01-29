@@ -1,6 +1,6 @@
 <?= $this->extend(config('Auth')->views['layout']) ?>
 
-<?= $this->section('title') ?> Aincp Platform - Login <?= $this->endSection() ?>
+<?= $this->section('title') ?> AIncP Project Platform - Login <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="vh-100">
