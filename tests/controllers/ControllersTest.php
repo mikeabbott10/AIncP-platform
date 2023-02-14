@@ -35,12 +35,8 @@ class SubjectsControllerTest extends CIUnitTestCase
         $result->assertSee('MACS', 'th');
     }
 
-    /**
-     * test subject card auto population
-     */
-    public function testSubjectCardPopulation()
-    {
-        // create temp stub
+
+    private function stub_getSubjectDataFromDb(){
         $subjectStub = array();
         $subjectStub['id'] = '1';
         $subjectStub['name'] = "Mario";
@@ -51,14 +47,24 @@ class SubjectsControllerTest extends CIUnitTestCase
         $subjectStub['aha'] = '80';
         $subjectStub['hemi'] = '1';
         $subjectStub['gender'] = "M";
+        return $subjectStub;
+    }
+
+    /**
+     * test subject card auto population
+     */
+    public function testSubjectCardPopulation()
+    {
+        // get subject data
+        $subjectData = $this->stub_getSubjectDataFromDb();
 
         $result = $this
             ->controller(\App\Controllers\SubjectsController::class)
-            ->execute('stub_subject_card', $subjectStub);
+            ->execute('stub_subject_card', $subjectData);
 
         $this->assertTrue($result->isOK());
         $result->assertSee('Subject Card', 'li');
-        foreach ($subjectStub as $key => $value) {
+        foreach ($subjectData as $key => $value) {
             $result->assertSee($value);
         }
     }

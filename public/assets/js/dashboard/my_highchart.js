@@ -88,4 +88,8 @@ fetch(dataURL)
             }
         }]
     });
+
+    // set start and end time manually
+    $('input[name=start_time]').val(data[0][0]);
+    $('input[name=end_time]').val(data[data.length-1][0]);
 }).catch(error => console.error(error.message));

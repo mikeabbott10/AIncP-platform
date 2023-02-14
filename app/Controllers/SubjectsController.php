@@ -31,18 +31,18 @@ class SubjectsController extends BaseController{
         return view('pages/dashboard/subject_card', $data);
     }
 
-    /** show subject card
-     * @param id
+    /** show subject card from stub
+     * @param subj the subject stub
     */
-    public function stub_subject_card($subj){
-        $data['currentpage'] = 'Subjects';
+    // public function stub_subject_card($subj){
+    //     $data['currentpage'] = 'Subjects';
 
-        $data['subject'] = $subj;
+    //     $data['subject'] = $subj;
 
-        helper('form');
-        $data['errors'] = [];
-        return view('pages/dashboard/subject_card', $data);
-    }
+    //     helper('form');
+    //     $data['errors'] = [];
+    //     return view('pages/dashboard/subject_card', $data);
+    // }
 
     /**
      * delete subject

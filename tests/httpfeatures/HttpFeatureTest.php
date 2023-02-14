@@ -25,7 +25,7 @@ class HttpFeatureTest extends CIUnitTestCase
     /**
      * CSFR blocks bot request
      */
-    public function testCSFRBlock()
+    public function testCSRFBlock()
     {
         $this->expectException(\CodeIgniter\Security\Exceptions\SecurityException::class);
 
@@ -50,5 +50,20 @@ class HttpFeatureTest extends CIUnitTestCase
 
         $this->assertTrue($result->isOK());
     }
+
+
+
+    // public function testCSRFUpload(){
+    //     $result = $this->call('post', 'session/upload', [
+    //         Services::security()->getTokenName() 
+    //             => Services::security()->getHash(),
+    //         'start_time'  => 1675182181,
+    //         'end_time' => 1675182202,
+    //         'file_id' => 10,
+    //         'notes' => '',
+    //     ]);
+
+    //     $this->assertTrue($result->isOK());
+    // }
 
 }

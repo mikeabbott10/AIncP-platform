@@ -33,7 +33,7 @@ class UploadController extends BaseController{
         $data['currentpage'] = 'Upload Subject Data';
 
         //$mimes = config(\Config\Mimes::class);
-        //var_dump($mimes); does not work, it's an empty object
+        //var_dump($mimes); it seems a bug: does not work, it's an empty object
 
         $validationRule = [
             'data_file' => [

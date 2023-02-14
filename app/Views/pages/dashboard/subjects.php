@@ -99,7 +99,7 @@
 ## Page breadcrumb
 ===================================================================== -->
 <?= $this->section('breadcrumb') ?>
-<li class="breadcrumb-item active">Home</li>
+<li class="breadcrumb-item active">All</li>
 <?= $this->endSection() ?>
 
 <!-- ===================================================================

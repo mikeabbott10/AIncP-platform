@@ -42,7 +42,7 @@ class SessionsController extends BaseController{
             return redirect()->to(base_url("/dashboard/subject/{$subjId}/session"));
 
         helper('form');
-        return $this->showSubjectAddSessionView($subjId, $data);
+        return $this->showUploadFileView($subjId, $data);
     }
 
     /**
@@ -100,7 +100,7 @@ class SessionsController extends BaseController{
             $insertedRowId = $filepathModel->insertID();
 
             // redirect to new session with new file data
-            $data['data'] = [];
+            $data['data'] = true;
             $data['controller'] = $this;
             $data['file_id'] = $insertedRowId;
             // update data file for this session
@@ -140,8 +140,8 @@ class SessionsController extends BaseController{
             'file_id', 'start_time', 'end_time', 'tag_id', 'notes'
         ]);
         
-        $post['start_time'] = date("Y-m-d H:i:s", substr($post['start_time'], 0, -3));
-        $post['end_time'] = date("Y-m-d H:i:s", substr($post['end_time'], 0, -3));
+        $post['start_time'] = date("Y-m-d H:i:s", intval(substr($post['start_time'], 0, -3)) );
+        $post['end_time'] = date("Y-m-d H:i:s", intval(substr($post['end_time'], 0, -3)) );
 
         // Checks whether the submitted data passed the validation rules.
         if (! $this->validation->run($post, 'session_rules')) {
@@ -167,7 +167,7 @@ class SessionsController extends BaseController{
 
         $file = new File($this->session->get('data_filepath'));
         $file = $file->openFile();
-        
+
         if($start_time<0 || $end_time<0){
             $start_index = 0;
             $file->seek($file->getSize());
@@ -177,7 +177,7 @@ class SessionsController extends BaseController{
         }
 
         echo json_encode($this->getFileDataChunk($file, $start_index, $end_index));
-        return; 
+        return;
     }
 
     private function getFileDataChunk($splFile, $start_index, $end_index){
@@ -299,5 +299,12 @@ class SessionsController extends BaseController{
             $data['errors'] = [];
         $data['currentpage'] = 'Subjects';
         return view('pages/dashboard/new_session', $data);
+    }
+
+    private function showUploadFileView($subjId, $data=[]){
+        if(!isset($data['errors']))
+            $data['errors'] = [];
+        $data['currentpage'] = 'Subjects';
+        return view('pages/dashboard/upload_file', $data);
     }
 }
